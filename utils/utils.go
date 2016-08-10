@@ -6,3 +6,11 @@ func Check(e error) {
 		panic(e)
 	}
 }
+
+// MaxInt return the max of Ints
+func MaxInt(a, b int) int {
+	if a < b {
+		return b
+	}
+	return a
+}

@@ -3,8 +3,8 @@ package types
 // Log contains log meta data and log text
 type Log struct {
 	OrderNo    int
-	Path       string
-	SourceType int
+	SourceID   string
+	SourceType SourceType
 	Text       chan string
 }
 

@@ -17,5 +17,5 @@ func FileReader(path string, orderNo int) (Log types.Log) {
 		}
 	}()
 
-	return types.Log{Text: channel, SourceType: types.SourceTypeFile, OrderNo: orderNo, Path: path}
+	return types.Log{Text: channel, SourceType: types.File, OrderNo: orderNo, SourceID: path}
 }
