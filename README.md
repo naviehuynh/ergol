@@ -32,6 +32,9 @@ __PoC__
 - consider process launcher
 - testing
 
+- fix: group logs of the same source, with a grace period of 0.1s and possibly maxlength of 100
+- fix: shortNames is not guaranteed to identify Log, find something else (e.g generate name relative to other SourceIDs)
+
 ### FEATURES
 <!-- - tail multiple logs -->
 <!-- - output different color for each file -->

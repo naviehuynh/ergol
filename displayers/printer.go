@@ -15,12 +15,12 @@ func Print(logs []types.Log) {
 
 	maxPathLength := -1
 	for _, log := range logs {
-		maxPathLength = utils.MaxInt(maxPathLength, len(log.SourceID))
+		maxPathLength = utils.MaxInt(maxPathLength, len(log.ShortName()))
 	}
 
 	for _, log := range logs {
 		go func(log types.Log) {
-			prefix := colored(padded(log.SourceID, maxPathLength)+" |   ", log.OrderNo)
+			prefix := colored(padded(log.ShortName(), maxPathLength)+" |   ", log.OrderNo)
 			for str := range log.Text {
 				buffers <- fmt.Sprintf("%s%s", prefix, str)
 			}
