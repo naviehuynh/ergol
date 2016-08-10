@@ -13,14 +13,10 @@ func main() {
 		return
 	}
 
-	bufferStream := make(chan types.Log)
-	inputStreams := make([]chan types.Log, len(paths))
+	filteredLogs := make([]types.Log, len(paths))
 	for i, path := range paths {
-		inputStreams[i] = sources.FileReader(path)
+		filteredLogs[i] = filters.ApplyLogFilters(sources.FileReader(path, i))
 	}
 
-	for _, channel := range inputStreams {
-		go filters.ApplyFilters(channel, bufferStream)
-	}
-	displayers.Print(bufferStream)
+	displayers.Print(filteredLogs)
 }

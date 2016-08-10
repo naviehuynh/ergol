@@ -7,18 +7,15 @@ import (
 )
 
 // FileReader reads and follow files
-func FileReader(path string) (stream chan types.Log) {
+func FileReader(path string, orderNo int) (Log types.Log) {
 	t, err := tail.TailFile(path, tail.Config{Follow: true})
 	utils.Check(err)
-	channel := make(chan types.Log)
+	channel := make(chan string)
 	go func() {
 		for line := range t.Lines {
-			log := types.Log{}
-			log.SetText(line.Text)
-			log.SetSource(path)
-			channel <- log
+			channel <- line.Text
 		}
 	}()
 
-	return channel
+	return types.Log{Text: channel, SourceType: types.SourceTypeFile, OrderNo: orderNo, Path: path}
 }
