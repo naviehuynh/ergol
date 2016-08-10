@@ -8,10 +8,13 @@ type Log struct {
 	Text       chan string
 }
 
-// sourceType can only be FILE or SSH
+// SourceType represents different input sources
+type SourceType int
+
+// input source types
 const (
-	SourceTypeFile int = iota
-	SourceTypeCMD
-	SourceTypeSTDIN
-	SourceTypeSSH
+	File SourceType = iota
+	CMD
+	STDIN
+	SSH
 )
