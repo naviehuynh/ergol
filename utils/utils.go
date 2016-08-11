@@ -1,5 +1,7 @@
 package utils
 
+import "github.com/fatih/color"
+
 // Check generic error checking
 func Check(e error) {
 	if e != nil {
@@ -13,4 +15,9 @@ func MaxInt(a, b int) int {
 		return b
 	}
 	return a
+}
+
+// Colored colors the string, the color is determined by number
+func Colored(text string, number int) string {
+	return color.New(color.Attribute(number%6+31), color.Bold).SprintFunc()(text)
 }

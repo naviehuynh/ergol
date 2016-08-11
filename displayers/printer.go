@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"fmt"
 
-	"github.com/fatih/color"
 	"github.com/naviehuynh/ergol/types"
 	"github.com/naviehuynh/ergol/utils"
 )
@@ -20,7 +19,7 @@ func Print(logs []types.Log) {
 
 	for _, log := range logs {
 		go func(log types.Log) {
-			prefix := colored(padded(log.ShortName(), maxPathLength)+" |   ", log.OrderNo)
+			prefix := utils.Colored(padded(log.ShortName(), maxPathLength)+" |   ", log.OrderNo)
 			for str := range log.Text {
 				buffers <- fmt.Sprintf("%s%s", prefix, str)
 			}
@@ -39,7 +38,4 @@ func padded(text string, length int) string {
 		buf.WriteString(" ")
 	}
 	return buf.String()
-}
-func colored(text string, number int) string {
-	return color.New(color.Attribute(number%6+31), color.Bold).SprintFunc()(text)
 }

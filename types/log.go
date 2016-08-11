@@ -31,3 +31,23 @@ func (l *Log) ShortName() string {
 		return l.SourceID
 	}
 }
+
+// Clone return a shallow copy of log
+func (l *Log) Clone() Log {
+	return Log{
+		OrderNo:    l.OrderNo,
+		SourceID:   l.SourceID,
+		SourceType: l.SourceType,
+		Text:       l.Text,
+	}
+}
+
+// Close gracefully closes a Log
+func (l *Log) Close() bool {
+	switch l.SourceType {
+	case File:
+		close(l.Text)
+	default:
+	}
+	return true
+}
