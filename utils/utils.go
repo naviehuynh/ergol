@@ -1,6 +1,10 @@
 package utils
 
-import "github.com/fatih/color"
+import (
+	"os"
+
+	"github.com/fatih/color"
+)
 
 // Check generic error checking
 func Check(e error) {
@@ -20,4 +24,10 @@ func MaxInt(a, b int) int {
 // Colored colors the string, the color is determined by number
 func Colored(text string, number int) string {
 	return color.New(color.Attribute(number%6+31), color.Bold).SprintFunc()(text)
+}
+
+// HasStdin return true if there are some data pumping into STDIN
+func HasStdin() bool {
+	stat, _ := os.Stdin.Stat()
+	return (stat.Mode() & os.ModeCharDevice) == 0
 }

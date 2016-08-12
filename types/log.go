@@ -16,8 +16,8 @@ type SourceType int
 // input source types
 const (
 	File SourceType = iota
-	CMD
-	STDIN
+	Cmd
+	Stdin
 	SSH
 )
 

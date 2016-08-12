@@ -10,6 +10,7 @@ import (
 
 // Print prints content to STDOUT
 func Print(logs []types.Log) {
+	logCount := len(logs)
 	buffers := make(chan string)
 
 	maxPathLength := -1
@@ -22,6 +23,10 @@ func Print(logs []types.Log) {
 			prefix := utils.Colored(padded(log.ShortName(), maxPathLength)+" |   ", log.OrderNo)
 			for str := range log.Text {
 				buffers <- fmt.Sprintf("%s%s", prefix, str)
+			}
+			logCount--
+			if logCount <= 0 {
+				close(buffers)
 			}
 		}(log)
 	}
