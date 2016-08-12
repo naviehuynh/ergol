@@ -1,4 +1,4 @@
-package displayers
+package printers
 
 import (
 	"bytes"

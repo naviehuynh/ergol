@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/naviehuynh/ergol/displayers"
+	"github.com/naviehuynh/ergol/printers"
 	"github.com/naviehuynh/ergol/filters"
 	"github.com/naviehuynh/ergol/sources"
 	"github.com/naviehuynh/ergol/types"
@@ -18,5 +18,5 @@ func main() {
 		filteredLogs[i] = filters.ApplyLogFilters(sources.FileReader(path, i))
 	}
 
-	displayers.Print(filteredLogs)
+	printers.Print(filteredLogs)
 }
