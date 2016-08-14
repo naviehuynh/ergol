@@ -9,9 +9,12 @@ import (
 )
 
 func main() {
-	paths := Parse().files
+	// reads args
+	args := ParseArgs()
+	paths := args.files
 	logsCount := len(paths)
 	hasStdin := utils.HasStdin()
+
 	if hasStdin {
 		logsCount++
 	}
@@ -19,14 +22,30 @@ func main() {
 		return
 	}
 
-	// start to read logs
-	filteredLogs := make([]types.Log, 0, logsCount)
-	if hasStdin {
-		filteredLogs = append(filteredLogs, filters.ApplyLogFilters(sources.StdinReader(len(filteredLogs))))
-	}
-	for _, path := range paths {
-		filteredLogs = append(filteredLogs, filters.ApplyLogFilters(sources.FileReader(path, len(filteredLogs))))
+	// make filter instances
+	filterInstances := []filters.Filter{}
+	if len(args.grepPattern) > 0 {
+		grepFilter := filters.Grep{
+			Pattern: args.grepPattern,
+		}
+		filterInstances = append(filterInstances, grepFilter)
 	}
 
+	// start to read logs
+	logs := make([]types.Log, 0, logsCount)
+	if hasStdin {
+		stdinLog := sources.StdinReader(len(logs))
+		logs = append(logs, stdinLog)
+	}
+	for _, path := range paths {
+		fileLog := sources.FileReader(path, len(logs))
+		logs = append(logs, fileLog)
+	}
+
+	// apply filters
+	filteredLogs := make([]types.Log, 0, logsCount)
+	for _, log := range logs {
+		filteredLogs = append(filteredLogs, filters.ApplyLogFilters(filterInstances, log))
+	}
 	printers.Print(filteredLogs)
 }
