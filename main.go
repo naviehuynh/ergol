@@ -26,7 +26,8 @@ func main() {
 	filterInstances := []filters.Filter{}
 	if len(args.grepPattern) > 0 {
 		grepFilter := filters.Grep{
-			Pattern: args.grepPattern,
+			Pattern:       args.grepPattern,
+			KeepUnmatched: args.grepKeepUnmatched,
 		}
 		filterInstances = append(filterInstances, grepFilter)
 	}
@@ -47,5 +48,7 @@ func main() {
 	for _, log := range logs {
 		filteredLogs = append(filteredLogs, filters.ApplyLogFilters(filterInstances, log))
 	}
+
+	// finally print filtered logs to screen
 	printers.Print(filteredLogs)
 }

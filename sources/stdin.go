@@ -13,10 +13,10 @@ func StdinReader(orderNo int) types.Log {
 	textChan := make(chan string)
 
 	go func() {
+		defer close(textChan)
 		for scanner.Scan() {
 			textChan <- scanner.Text()
 		}
-		close(textChan)
 	}()
 
 	return types.Log{Text: textChan, SourceType: types.Stdin, OrderNo: orderNo, SourceID: "STDIN"}

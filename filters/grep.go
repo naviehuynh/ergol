@@ -11,7 +11,7 @@ import (
 // Grep filter
 type Grep struct {
 	CaseSensitive bool
-	keepUnmatched bool
+	KeepUnmatched bool
 	Pattern       string
 	// TODO: Implement these options
 	// IsRegexp      bool
@@ -24,9 +24,10 @@ type Grep struct {
 func (f Grep) Apply(log types.Log) types.Log {
 	newText := make(chan string)
 	go func() {
+		defer close(newText)
 		for line := range log.Text {
 			highlightedLine, count := highlightMatches(line, f.Pattern, f.CaseSensitive)
-			if count > 0 || f.keepUnmatched {
+			if count > 0 || f.KeepUnmatched {
 				newText <- highlightedLine
 			}
 		}
