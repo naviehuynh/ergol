@@ -1,9 +1,6 @@
 package main
 
-import (
-	"flag"
-	"fmt"
-)
+import "flag"
 
 // ErgolArgs contains cli arguments passed into Ergol
 type ErgolArgs struct {
@@ -28,6 +25,5 @@ func ParseArgs() ErgolArgs {
 		args.grepBefore = *grepC
 	}
 	args.files = flag.Args()
-	fmt.Println(args)
 	return args
 }
