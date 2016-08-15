@@ -1,6 +1,23 @@
 package main
 
-import "flag"
+import (
+	"flag"
+	"strings"
+)
+
+// StringArgs ...
+type StringArgs []string
+
+// String is used by flag parser to pass multiple values arg
+func (args *StringArgs) String() string {
+	return strings.Join(*args, ", ")
+}
+
+// Set is used by flag parser to pass multiple values arg
+func (args *StringArgs) Set(commands string) error {
+	*args = append(*args, strings.Split(commands, ",")...)
+	return nil
+}
 
 // ErgolArgs contains cli arguments passed into Ergol
 type ErgolArgs struct {
@@ -9,6 +26,7 @@ type ErgolArgs struct {
 	grepAfter         int
 	grepBefore        int
 	grepKeepUnmatched bool
+	cmds              StringArgs
 }
 
 // ParseArgs cli argumens into structured format
@@ -18,8 +36,11 @@ func ParseArgs() ErgolArgs {
 	flag.IntVar(&args.grepAfter, "A", 0, "keep X lines before a match")
 	flag.IntVar(&args.grepBefore, "B", 0, "keep X lines after a match")
 	flag.BoolVar(&args.grepKeepUnmatched, "K", false, "keep lines that doesn't match pattern")
+	flag.Var(&args.cmds, "e", "Commands to be executed")
 	grepC := flag.Int("C", 0, "keep X lines before and after a match")
+
 	flag.Parse()
+
 	if *grepC != 0 {
 		args.grepAfter = *grepC
 		args.grepBefore = *grepC
