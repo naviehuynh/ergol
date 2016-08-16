@@ -11,7 +11,6 @@ import (
 func StdinReader(orderNo int) types.Log {
 	scanner := bufio.NewScanner(os.Stdin)
 	textChan := make(chan string)
-
 	go func() {
 		defer close(textChan)
 		for scanner.Scan() {

@@ -12,7 +12,8 @@ func main() {
 	// reads args
 	args := ParseArgs()
 	paths := args.files
-	logsCount := len(paths)
+	cmds := args.cmds
+	logsCount := len(paths) + len(cmds)
 	hasStdin := utils.HasStdin()
 
 	if hasStdin {
@@ -41,6 +42,9 @@ func main() {
 	for _, path := range paths {
 		fileLog := sources.FileReader(path, len(logs))
 		logs = append(logs, fileLog)
+	}
+	for _, cmd := range cmds {
+		logs = append(logs, sources.CmdReader(cmd, len(logs)))
 	}
 
 	// apply filters
