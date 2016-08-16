@@ -24,7 +24,7 @@ func CmdReader(command string, orderNo int) types.Log {
 
 	textChan := make(chan string)
 	scanners := []*bufio.Scanner{bufio.NewScanner(stdout), bufio.NewScanner(stderr)}
-	count := 2
+	count := len(scanners)
 	for _, scanner := range scanners {
 		go func(scanner *bufio.Scanner) {
 			defer closeChannel(&count, textChan)
