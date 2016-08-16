@@ -45,12 +45,11 @@ func highlightMatches(text, pattern string, CaseSensitive bool) (string, int) {
 	}
 	reg, err := regexp.Compile(regexpString)
 	utils.Check(err)
-	coloredPattern := utils.Colored(pattern, 0)
 	count := 0
 	// TODO: find a better way to count
-	highlightedText := reg.ReplaceAllStringFunc(text, func(_ string) string {
+	highlightedText := reg.ReplaceAllStringFunc(text, func(oriText string) string {
 		count++
-		return coloredPattern
+		return utils.Colored(oriText, 0)
 	})
 	return highlightedText, count
 }

@@ -29,6 +29,7 @@ func main() {
 		grepFilter := filters.Grep{
 			Pattern:       args.grepPattern,
 			KeepUnmatched: args.grepKeepUnmatched,
+			CaseSensitive: args.grepCaseSensitive,
 		}
 		filterInstances = append(filterInstances, grepFilter)
 	}
