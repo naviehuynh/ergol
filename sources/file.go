@@ -1,24 +1,29 @@
 package sources
 
 import (
-	"github.com/hpcloud/tail"
+	"fmt"
+	"strings"
+
 	"github.com/naviehuynh/ergol/types"
-	"github.com/naviehuynh/ergol/utils"
 )
 
 // FileReader reads and follow files
-func FileReader(path string, orderNo int) (Log types.Log) {
-	t, err := tail.TailFile(path, tail.Config{
-		Follow: true,
-		ReOpen: true,
-	})
-	utils.Check(err)
-	channel := make(chan string)
-	go func() {
-		for line := range t.Lines {
-			channel <- line.Text
-		}
-	}()
+func FileReader(path string, orderNo, numLines int) (Log types.Log) {
+	args := []string{"-F"}
+	if numLines == -1 {
+		// read whole file
+		args = append(args, "-n +1")
+	} else {
+		args = append(args, fmt.Sprintf("-n %d", numLines))
+	}
 
-	return types.Log{Text: channel, SourceType: types.File, OrderNo: orderNo, SourceID: path}
+	tailCommand := fmt.Sprintf("tail %s %s", path, strings.Join(args, " "))
+	textChan, _ := readCmd(tailCommand)
+
+	return types.Log{
+		Text:       textChan,
+		SourceType: types.File,
+		OrderNo:    orderNo,
+		SourceID:   path,
+	}
 }
