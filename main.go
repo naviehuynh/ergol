@@ -41,8 +41,7 @@ func main() {
 		logs = append(logs, stdinLog)
 	}
 	for _, path := range paths {
-		// hardcoded, reading last 10 lines
-		fileLog := sources.FileReader(path, len(logs), 10)
+		fileLog := sources.FileReader(path, len(logs), args.grepLineCount)
 		logs = append(logs, fileLog)
 	}
 	for _, cmd := range cmds {
