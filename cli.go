@@ -36,10 +36,10 @@ func ParseArgs() ErgolArgs {
 	flag.StringVar(&args.grepPattern, "g", "", "grep pattern")
 	flag.IntVar(&args.grepAfter, "A", 0, "keep X lines before a match")
 	flag.IntVar(&args.grepBefore, "B", 0, "keep X lines after a match")
+	grepC := flag.Int("C", 0, "keep X lines before and after a match")
 	flag.BoolVar(&args.grepKeepUnmatched, "K", false, "keep lines that doesn't match pattern")
 	flag.BoolVar(&args.grepCaseSensitive, "S", false, "case sensitive string comparison")
 	flag.Var(&args.cmds, "e", "Commands to be executed")
-	grepC := flag.Int("C", 0, "keep X lines before and after a match")
 
 	flag.Parse()
 

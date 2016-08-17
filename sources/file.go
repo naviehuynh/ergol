@@ -8,7 +8,10 @@ import (
 
 // FileReader reads and follow files
 func FileReader(path string, orderNo int) (Log types.Log) {
-	t, err := tail.TailFile(path, tail.Config{Follow: true})
+	t, err := tail.TailFile(path, tail.Config{
+		Follow: true,
+		ReOpen: true,
+	})
 	utils.Check(err)
 	channel := make(chan string)
 	go func() {
