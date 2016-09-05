@@ -8,28 +8,24 @@ import (
 	"github.com/naviehuynh/ergol/utils"
 )
 
-// Grep filter
-type Grep struct {
+// Highlighter filter
+type Highlighter struct {
 	CaseSensitive bool
 	KeepUnmatched bool
 	Pattern       string
+
 	// TODO: Implement these options
 	// IsRegexp      bool
-	// KeepBefore int
-	// KeepAfter int
-	// Inverse int
 }
 
 //Apply text filtering on a log.Text
-func (f Grep) Apply(log types.Log) types.Log {
+func (f Highlighter) Apply(log types.Log) types.Log {
 	newText := make(chan string)
 	go func() {
 		defer close(newText)
 		for line := range log.Text {
-			highlightedLine, count := highlightMatches(line, f.Pattern, f.CaseSensitive)
-			if count > 0 || f.KeepUnmatched {
-				newText <- highlightedLine
-			}
+			highlightedLine, _ := highlightMatches(line, f.Pattern, f.CaseSensitive)
+			newText <- highlightedLine
 		}
 	}()
 	newLog := log.Clone()

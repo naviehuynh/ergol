@@ -25,11 +25,10 @@ func main() {
 
 	// make filter instances
 	filterInstances := []filters.Filter{}
-	if len(args.grepPattern) > 0 {
-		grepFilter := filters.Grep{
-			Pattern:       args.grepPattern,
-			KeepUnmatched: args.grepKeepUnmatched,
-			CaseSensitive: args.grepCaseSensitive,
+	if len(args.highlightPattern) > 0 {
+		grepFilter := filters.Highlighter{
+			Pattern:       args.highlightPattern,
+			CaseSensitive: args.highlightCaseSensitive,
 		}
 		filterInstances = append(filterInstances, grepFilter)
 	}
@@ -41,7 +40,7 @@ func main() {
 		logs = append(logs, stdinLog)
 	}
 	for _, path := range paths {
-		fileLog := sources.FileReader(path, len(logs), args.grepLineCount)
+		fileLog := sources.FileReader(path, len(logs), args.lineCount)
 		logs = append(logs, fileLog)
 	}
 	for _, cmd := range cmds {
